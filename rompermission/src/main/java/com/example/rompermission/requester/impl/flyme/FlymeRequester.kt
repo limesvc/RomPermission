@@ -4,7 +4,7 @@ import android.content.Context
 import com.example.rompermission.requester.impl.RomRequester
 
 abstract class FlymeRequester : RomRequester() {
-    override fun doAlertWindowRequest(host: Any, permission: String, requestCode: Int): Boolean {
+    override fun doAlertWindowRequest(host: Any): Boolean {
         val context = getContext(host)
         return if (!hasAlertWindowPermission(context)) {
             applyAlterPermission(context)

@@ -11,8 +11,12 @@ import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.util.Log
+import android.widget.Toast
+import com.example.rompermission.PermissionCallback
+import com.example.rompermission.activity.PermissionRequestActivity
 
 import com.example.rompermission.requester.IRomPermissionRequester
+import javax.security.auth.callback.Callback
 
 
 open class DefaultRequester : IRomPermissionRequester {
@@ -32,45 +36,72 @@ open class DefaultRequester : IRomPermissionRequester {
         return true
     }
 
+    private fun hasPermission(host: Any, permission: String): Boolean {
+        val context = getContext(host)
+        if (Manifest.permission.SYSTEM_ALERT_WINDOW == permission) {
+            return hasAlertWindowPermission(context)
+        } else {
+            return ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
+        }
+    }
+
     open fun hasAlertWindowPermission(context: Context): Boolean {
         return !(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(context))
     }
 
-    override fun checkAndRequest(host: Any, permissions: Array<String>, requestCode: Int): Boolean {
-        var success = true
+    override fun checkAndRequest(host: Any, permissions: Array<String>, messageResId: Int, callback: PermissionCallback?): Boolean {
+        val context = getContext(host)
+        val message = context.getString(messageResId)
+        return checkAndRequest(host, permissions, message, callback)
+    }
+
+    override fun checkAndRequest(host: Any, permissions: Array<String>, message: String, callback: PermissionCallback?): Boolean {
+        val dynamicPermission = mutableListOf<String>()
+
+        var needAlertWindow = false;
+
         for (permission in permissions) {
-            when (permission) {
-            //  Calendar
-                Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR -> success = success and doCalendarRequest(host, permission, requestCode)
-
-            //  Camera
-                Manifest.permission.CAMERA -> success = success and doCameraRequest(host, permission, requestCode)
-
-            //  Contacts
-                Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS, Manifest.permission.GET_ACCOUNTS -> success = success and doContactsRequest(host, permission, requestCode)
-
-            //  Location
-                Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION -> success = success and doLocationRequest(host, permission, requestCode)
-
-            //  Phone
-                Manifest.permission.READ_PHONE_STATE, Manifest.permission.CALL_PHONE, Manifest.permission.READ_CALL_LOG, Manifest.permission.WRITE_CALL_LOG, Manifest.permission.ADD_VOICEMAIL, Manifest.permission.USE_SIP, Manifest.permission.PROCESS_OUTGOING_CALLS -> success = success and doPhoneRequest(host, permission, requestCode)
-
-            //  Sensors
-                Manifest.permission.BODY_SENSORS -> success = success and doSensorsRequest(host, permission, requestCode)
-
-            //  SMS
-                Manifest.permission.SEND_SMS, Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_WAP_PUSH, Manifest.permission.RECEIVE_MMS -> success = success and doSMSRequest(host, permission, requestCode)
-
-            //  Storage
-                Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE -> success = success and doStorageRequest(host, permission, requestCode)
-
-            //  FloatWindow
-                Manifest.permission.SYSTEM_ALERT_WINDOW -> success = success and doAlertWindowRequest(host, permission, requestCode)
+            if (!Manifest.permission.SYSTEM_ALERT_WINDOW.equals(permission)) {
+                val granted = hasPermission(host, permission)
+                if (!granted) {
+                    dynamicPermission.add(permission)
+                }
+            } else if (!hasPermission(host, Manifest.permission.SYSTEM_ALERT_WINDOW)){
+                needAlertWindow = true
             }
-
         }
 
-        return success
+        if (dynamicPermission.isEmpty() && !needAlertWindow) {
+            callback?.onResult(true)
+            return true
+        }
+
+        if (dynamicPermission.isEmpty() && needAlertWindow) {
+            doAlertWindowRequest(host)
+            return false
+        }
+
+        val context = getContext(host)
+        PermissionRequestActivity.permissionRequest(context, dynamicPermission.toTypedArray(), object : PermissionCallback {
+            override fun onResult(success: Boolean) {
+                PermissionRequestActivity.clearCallback()
+
+                try {
+                    callback?.onResult(success)
+                } catch (throwable: Throwable) {
+                    throwable.printStackTrace()
+                }
+
+                if (!success) {
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                }
+
+                if (needAlertWindow) {
+                    doAlertWindowRequest(host)
+                }
+            }
+        })
+        return false
     }
 
     open protected fun doCalendarRequest(host: Any, permission: String, requestCode: Int): Boolean {
@@ -108,7 +139,7 @@ open class DefaultRequester : IRomPermissionRequester {
     /**
      * https://blog.csdn.net/self_study/article/details/52859790
      */
-    open protected fun doAlertWindowRequest(host: Any, permission: String, requestCode: Int): Boolean {
+    open protected fun doAlertWindowRequest(host: Any): Boolean {
         val context = getContext(host)
         if (!hasAlertWindowPermission(context)) {
             //没有悬浮窗权限,跳转申请

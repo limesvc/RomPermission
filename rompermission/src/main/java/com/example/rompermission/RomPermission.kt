@@ -4,9 +4,24 @@ import com.example.rompermission.factory.PermissionRequesterFactory
 import com.example.rompermission.util.RomUtil
 
 object RomPermission {
-    fun checkAndRequest(host: Any, permissions: Array<String>, resultCode: Int): Boolean {
+    @JvmStatic
+    fun check(host: Any, permissions: Array<String>): Boolean {
         val romInfo = RomUtil.romInfo
         val requester = PermissionRequesterFactory.instance.getPermissionRequester(romInfo)
-        return requester!!.checkAndRequest(host, permissions, resultCode)
+        return requester!!.check(host, permissions)
+    }
+
+    @JvmStatic
+    fun checkAndRequest(host: Any, permissions: Array<String>, messageResId: Int, callback: PermissionCallback?): Boolean {
+        val romInfo = RomUtil.romInfo
+        val requester = PermissionRequesterFactory.instance.getPermissionRequester(romInfo)
+        return requester!!.checkAndRequest(host, permissions, messageResId, callback)
+    }
+
+    @JvmStatic
+    fun checkAndRequest(host: Any, permissions: Array<String>, message: String, callback: PermissionCallback?): Boolean {
+        val romInfo = RomUtil.romInfo
+        val requester = PermissionRequesterFactory.instance.getPermissionRequester(romInfo)
+        return requester!!.checkAndRequest(host, permissions, message, callback)
     }
 }

@@ -14,7 +14,7 @@ import com.example.rompermission.requester.impl.RomRequester
  * DeviceFileExploler 导出PermissionManager.apk进行分析
  */
 class VIVO4Requester : RomRequester() {
-    override fun doAlertWindowRequest(host: Any, permission: String, requestCode: Int): Boolean {
+    override fun doAlertWindowRequest(host: Any): Boolean {
         val context = getContext(host)
         return if (!hasAlertWindowPermission(context)) {
             val intent = Intent("permission.intent.action.softPermissionDetail")
