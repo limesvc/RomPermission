@@ -1,4 +1,4 @@
-package com.example.rompermission.requester.impl.vivo
+package com.rompermission.requester.impl.vivo
 
 import android.content.ComponentName
 import android.content.Context
@@ -6,7 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Binder
-import com.example.rompermission.requester.impl.RomRequester
+import com.rompermission.requester.impl.RomRequester
 
 /**
  * VIVO Android_8.1/FunTouch4.0

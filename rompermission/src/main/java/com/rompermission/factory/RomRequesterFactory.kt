@@ -1,6 +1,6 @@
 package com.rompermission.factory
 
-import com.example.rompermission.requester.impl.DefaultRequester
+import com.rompermission.requester.impl.DefaultRequester
 import java.lang.Exception
 
 abstract class RomRequesterFactory {

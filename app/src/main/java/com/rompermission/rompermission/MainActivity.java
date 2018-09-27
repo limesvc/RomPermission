@@ -11,7 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-import com.example.rompermission.util.RomUtil;
+import com.rompermission.util.RomUtil;
 import com.rompermission.PermissionCallback;
 import com.rompermission.RomPermission;
 

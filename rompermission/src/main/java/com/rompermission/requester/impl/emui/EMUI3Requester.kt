@@ -1,4 +1,4 @@
-package com.example.rompermission.requester.impl.emui
+package com.rompermission.requester.impl.emui
 
 import android.content.ComponentName
 

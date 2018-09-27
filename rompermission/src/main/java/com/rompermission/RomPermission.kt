@@ -1,7 +1,7 @@
 package com.rompermission
 
-import com.example.rompermission.factory.PermissionRequesterFactory
-import com.example.rompermission.util.RomUtil
+import com.rompermission.factory.PermissionRequesterFactory
+import com.rompermission.util.RomUtil
 
 object RomPermission {
     @JvmStatic

@@ -1,7 +1,7 @@
 package com.rompermission
 
-import com.example.rompermission.util.RomInfo
-import com.example.rompermission.util.RomType
+import com.rompermission.util.RomInfo
+import com.rompermission.util.RomType
 
 object RomIdentifier {
     /**

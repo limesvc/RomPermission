@@ -1,9 +1,9 @@
-package com.example.rompermission.requester.impl.miui
+package com.rompermission.requester.impl.miui
 
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import com.example.rompermission.requester.impl.RomRequester
+import com.rompermission.requester.impl.RomRequester
 
 
 abstract class MIUIRequester : RomRequester() {

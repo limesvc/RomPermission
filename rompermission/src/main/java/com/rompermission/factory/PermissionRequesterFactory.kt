@@ -1,14 +1,14 @@
 package com.rompermission.factory
 
-import com.example.rompermission.factory.impl.EMUIRequesterFactory
-import com.example.rompermission.factory.impl.FlymeRequesterFactory
-import com.example.rompermission.factory.impl.MIUIRequesterFactory
-import com.example.rompermission.factory.impl.VIVORequesterFactory
-import com.example.rompermission.requester.IRomPermissionRequester
-import com.example.rompermission.requester.impl.DefaultRequester
-import com.example.rompermission.requester.impl.vivo.VIVO4Requester
-import com.example.rompermission.util.RomInfo
-import com.example.rompermission.util.RomType
+import com.rompermission.factory.impl.EMUIRequesterFactory
+import com.rompermission.factory.impl.FlymeRequesterFactory
+import com.rompermission.factory.impl.MIUIRequesterFactory
+import com.rompermission.factory.impl.VIVORequesterFactory
+import com.rompermission.requester.IRomPermissionRequester
+import com.rompermission.requester.impl.DefaultRequester
+import com.rompermission.requester.impl.vivo.VIVO4Requester
+import com.rompermission.util.RomInfo
+import com.rompermission.util.RomType
 
 class PermissionRequesterFactory private constructor() {
 

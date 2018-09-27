@@ -1,7 +1,7 @@
-package com.example.rompermission.requester.impl.flyme
+package com.rompermission.requester.impl.flyme
 
 import android.content.Context
-import com.example.rompermission.requester.impl.RomRequester
+import com.rompermission.requester.impl.RomRequester
 
 abstract class FlymeRequester : RomRequester() {
     override fun doAlertWindowRequest(host: Any): Boolean {

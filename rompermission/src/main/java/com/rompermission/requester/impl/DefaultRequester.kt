@@ -1,4 +1,4 @@
-package com.example.rompermission.requester.impl
+package com.rompermission.requester.impl
 
 import android.Manifest
 import android.app.Activity
@@ -12,10 +12,10 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.widget.Toast
-import com.example.rompermission.PermissionCallback
-import com.example.rompermission.activity.PermissionRequestActivity
+import com.rompermission.PermissionCallback
+import com.rompermission.activity.PermissionRequestActivity
 
-import com.example.rompermission.requester.IRomPermissionRequester
+import com.rompermission.requester.IRomPermissionRequester
 import javax.security.auth.callback.Callback
 
 

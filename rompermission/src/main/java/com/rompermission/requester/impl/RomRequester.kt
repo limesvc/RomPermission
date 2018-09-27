@@ -1,4 +1,4 @@
-package com.example.rompermission.requester.impl
+package com.rompermission.requester.impl
 
 import android.annotation.TargetApi
 import android.app.AppOpsManager

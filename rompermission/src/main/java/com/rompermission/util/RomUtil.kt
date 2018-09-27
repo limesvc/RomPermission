@@ -1,4 +1,4 @@
-package com.example.rompermission.util
+package com.rompermission.util
 
 import android.text.TextUtils
 import android.util.Log

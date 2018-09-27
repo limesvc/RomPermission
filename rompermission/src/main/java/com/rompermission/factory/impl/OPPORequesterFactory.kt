@@ -1,9 +1,9 @@
 package com.rompermission.factory.impl
 
-import com.example.rompermission.factory.RomRequesterFactory
-import com.example.rompermission.requester.impl.DefaultRequester
-import com.example.rompermission.requester.impl.emui.EMUI3Requester
-import com.example.rompermission.requester.impl.emui.EMUI3p1Requester
+import com.rompermission.factory.RomRequesterFactory
+import com.rompermission.requester.impl.DefaultRequester
+import com.rompermission.requester.impl.emui.EMUI3Requester
+import com.rompermission.requester.impl.emui.EMUI3p1Requester
 
 class OPPORequesterFactory : RomRequesterFactory() {
     override fun getRequester(romVersion: String): DefaultRequester {

@@ -1,7 +1,7 @@
-package com.example.rompermission.requester.impl.oppo
+package com.rompermission.requester.impl.oppo
 
 import android.content.Intent
-import com.example.rompermission.requester.impl.RomRequester
+import com.rompermission.requester.impl.RomRequester
 
 class OPPORequester: RomRequester() {
     override fun doAlertWindowRequest(host: Any): Boolean {

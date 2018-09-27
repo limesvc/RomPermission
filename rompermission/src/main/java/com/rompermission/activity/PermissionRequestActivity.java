@@ -11,7 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
-import com.example.rompermission.PermissionCallback;
+import com.rompermission.PermissionCallback;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -45,22 +45,22 @@ public class PermissionRequestActivity extends Activity {
         Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
         startActivityForResult(intent, PERMISSION_CODE);
 
-//        List<String> uncheckPermissions = new ArrayList<>();
-//        for (String p : mPermissions) {
-//            //权限检测如果未允许，添加至待申请列表
-//            if (ContextCompat.checkSelfPermission(this, p) != PackageManager.PERMISSION_GRANTED) {
-//                uncheckPermissions.add(p);
-//            }
-//        }
-//
-//        if (!uncheckPermissions.isEmpty()) {
-//            String[] strings = new String[uncheckPermissions.size()];
-//            uncheckPermissions.toArray(strings);
-//            ActivityCompat.requestPermissions(this, strings, PERMISSION_CODE);
-//        } else {
-//            mCallback.onResult(true);
-//            finish();
-//        }
+        List<String> uncheckPermissions = new ArrayList<>();
+        for (String p : mPermissions) {
+            //权限检测如果未允许，添加至待申请列表
+            if (ContextCompat.checkSelfPermission(this, p) != PackageManager.PERMISSION_GRANTED) {
+                uncheckPermissions.add(p);
+            }
+        }
+
+        if (!uncheckPermissions.isEmpty()) {
+            String[] strings = new String[uncheckPermissions.size()];
+            uncheckPermissions.toArray(strings);
+            ActivityCompat.requestPermissions(this, strings, PERMISSION_CODE);
+        } else {
+            mCallback.onResult(true);
+            finish();
+        }
     }
 
     @Override

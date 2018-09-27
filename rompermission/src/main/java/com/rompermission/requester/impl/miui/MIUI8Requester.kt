@@ -1,4 +1,4 @@
-package com.example.rompermission.requester.impl.miui
+package com.rompermission.requester.impl.miui
 
 import android.content.Context
 import android.content.Intent

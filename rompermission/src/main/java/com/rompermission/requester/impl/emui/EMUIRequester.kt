@@ -1,11 +1,11 @@
-package com.example.rompermission.requester.impl.emui
+package com.rompermission.requester.impl.emui
 
 import android.content.ActivityNotFoundException
 import android.content.ComponentName
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
-import com.example.rompermission.requester.impl.RomRequester
+import com.rompermission.requester.impl.RomRequester
 
 
 /**
