@@ -32,6 +32,7 @@ object RomUtil {
     private val KEY_FLYME_PUBLISH_FALG = "ro.flyme.published"
 
     private val KEY_VIVO_OS_VERSION = "ro.vivo.os.version"
+    private val KEY_OPPO_OS_VERSION = "ro.build.version.opporom"
 
     val isFlyme: Boolean
         get() = isPropertiesExist(KEY_FLYME_ICON_FALG, KEY_FLYME_SETUP_FALG, KEY_FLYME_PUBLISH_FALG)
@@ -89,6 +90,15 @@ object RomUtil {
                     info.romType = RomType.FLYME
                     info.version = getPropertyValue(buildProperties, KEY_FLYME_ID_FALG_KEY)
                 }
+                if (buildProperties.containsKey(KEY_VIVO_OS_VERSION)) {
+                    info.romType = RomType.VIVO
+                    info.version = getPropertyValue(buildProperties, KEY_VIVO_OS_VERSION)
+                }
+                if (buildProperties.containsKey(KEY_OPPO_OS_VERSION)) {
+                    info.romType = RomType.OPPO
+                    info.version = getPropertyValue(buildProperties, KEY_OPPO_OS_VERSION)
+                }
+
                 if (buildProperties.containsKey(KEY_FLYME_ID_FALG_KEY)) {
                     val romName = buildProperties.getProperty(KEY_FLYME_ID_FALG_KEY)
                     if (!TextUtils.isEmpty(romName) && romName.contains(KEY_FLYME_ID_FALG_VALUE_KEYWORD)) {
@@ -97,11 +107,17 @@ object RomUtil {
                     }
                 }
 
-                val versionCode = getSystemProperty(KEY_VIVO_OS_VERSION)
-                if (!TextUtils.isEmpty(versionCode)) {
-                    info.version = versionCode
-                    info.romType = RomType.VIVO
-                }
+//                var versionCode = getSystemProperty(KEY_VIVO_OS_VERSION)
+//                if (!versionCode.isEmpty()) {
+//                    info.version = versionCode
+//                    info.romType = RomType.VIVO
+//                }
+//
+//                versionCode = getSystemProperty(KEY_OPPO_OS_VERSION)
+//                if (!versionCode.isEmpty()) {
+//                    info.version = versionCode
+//                    info.romType = RomType.OPPO
+//                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -150,7 +166,7 @@ object RomUtil {
     }
 
     private fun isPropertiesExist(vararg keys: String): Boolean {
-        if (keys.size == 0) {
+        if (keys.isEmpty()) {
             return false
         }
         try {
@@ -173,29 +189,5 @@ object RomUtil {
         } catch (e: IOException) {
             return ""
         }
-    }
-
-    fun getSystemProperty(propName: String): String {
-        val line: String
-        var input: BufferedReader? = null
-        try {
-            val p = Runtime.getRuntime().exec("getprop $propName")
-            input = BufferedReader(InputStreamReader(p.inputStream), 1024)
-            line = input.readLine()
-            input.close()
-        } catch (ex: IOException) {
-            Log.e(TAG, "Unable to read sysprop $propName", ex)
-            return ""
-        } finally {
-            if (input != null) {
-                try {
-                    input.close()
-                } catch (e: IOException) {
-                    Log.e(TAG, "Exception while closing InputStream", e)
-                }
-
-            }
-        }
-        return line
     }
 }

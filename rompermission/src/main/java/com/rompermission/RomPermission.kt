@@ -1,4 +1,4 @@
-package com.example.rompermission
+package com.rompermission
 
 import com.example.rompermission.factory.PermissionRequesterFactory
 import com.example.rompermission.util.RomUtil

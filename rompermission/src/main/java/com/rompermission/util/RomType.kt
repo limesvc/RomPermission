@@ -5,5 +5,6 @@ enum class RomType {
     FLYME,
     EMUI,
     VIVO,
+    OPPO,
     OTHER
 }

@@ -1,4 +1,4 @@
-package com.example.rompermission.factory.impl
+package com.rompermission.factory.impl
 
 import com.example.rompermission.factory.RomRequesterFactory
 import com.example.rompermission.requester.impl.DefaultRequester

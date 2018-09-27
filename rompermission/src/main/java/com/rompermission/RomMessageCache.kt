@@ -1,4 +1,4 @@
-package com.example.rompermission
+package com.rompermission
 
 class RomMessageCache {
     val romName: String

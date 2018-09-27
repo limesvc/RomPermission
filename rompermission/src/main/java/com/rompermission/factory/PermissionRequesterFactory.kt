@@ -1,4 +1,4 @@
-package com.example.rompermission.factory
+package com.rompermission.factory
 
 import com.example.rompermission.factory.impl.EMUIRequesterFactory
 import com.example.rompermission.factory.impl.FlymeRequesterFactory
@@ -18,6 +18,7 @@ class PermissionRequesterFactory private constructor() {
             RomType.FLYME -> return FlymeRequesterFactory().getRequester(romInfo.version)
             RomType.EMUI -> return EMUIRequesterFactory().getRequester(romInfo.version)
             RomType.VIVO -> return VIVORequesterFactory().getRequester(romInfo.version)
+            RomType.OPPO -> return DefaultRequester()
             RomType.OTHER -> return DefaultRequester()
         }
     }

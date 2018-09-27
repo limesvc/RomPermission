@@ -1,4 +1,4 @@
-package com.example.rompermission
+package com.rompermission
 
 import com.example.rompermission.util.RomInfo
 import com.example.rompermission.util.RomType

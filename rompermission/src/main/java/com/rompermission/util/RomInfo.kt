@@ -12,5 +12,5 @@ class RomInfo {
     /**
      * 版本号
      */
-    lateinit var version: String
+    var version = ""
 }

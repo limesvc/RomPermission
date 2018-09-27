@@ -28,7 +28,7 @@ open class DefaultRequester : IRomPermissionRequester {
                     return false
                 }
             } else {
-                if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                if (!hasPermission(host, permission)) {
                     return false
                 }
             }
@@ -40,6 +40,8 @@ open class DefaultRequester : IRomPermissionRequester {
         val context = getContext(host)
         if (Manifest.permission.SYSTEM_ALERT_WINDOW == permission) {
             return hasAlertWindowPermission(context)
+        } else if (Manifest.permission.REQUEST_INSTALL_PACKAGES == permission) {
+            return hasInstallPackagePermission(context)
         } else {
             return ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
         }
@@ -47,6 +49,15 @@ open class DefaultRequester : IRomPermissionRequester {
 
     open fun hasAlertWindowPermission(context: Context): Boolean {
         return !(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(context))
+    }
+
+    open fun hasInstallPackagePermission(context: Context): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return context.packageManager.canRequestPackageInstalls()
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return ContextCompat.checkSelfPermission(context, Manifest.permission.REQUEST_INSTALL_PACKAGES) == PackageManager.PERMISSION_GRANTED
+        } else
+            return true
     }
 
     override fun checkAndRequest(host: Any, permissions: Array<String>, messageResId: Int, callback: PermissionCallback?): Boolean {
@@ -66,7 +77,7 @@ open class DefaultRequester : IRomPermissionRequester {
                 if (!granted) {
                     dynamicPermission.add(permission)
                 }
-            } else if (!hasPermission(host, Manifest.permission.SYSTEM_ALERT_WINDOW)){
+            } else if (!hasPermission(host, Manifest.permission.SYSTEM_ALERT_WINDOW)) {
                 needAlertWindow = true
             }
         }
