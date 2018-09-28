@@ -15,8 +15,6 @@ import com.rompermission.util.RomUtil;
 import com.rompermission.PermissionCallback;
 import com.rompermission.RomPermission;
 
-import java.io.File;
-
 /**
  * @author wuxi
  * @since 2018/7/12
@@ -31,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onCheckOnly(View view) {
-        if (RomPermission.check(this, new String[]{permission.REQUEST_INSTALL_PACKAGES})) {
+        if (RomPermission.check(this, new String[]{permission.CAMERA})) {
             Log.e("onCheckOnly", "success____233333333");
         } else {
             Log.e("onCheckOnly", "failure____233333333");
@@ -39,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onRequest(View view) {
-        RomPermission.checkAndRequest(this, new String[]{permission.SYSTEM_ALERT_WINDOW}, R.string.error_permission, new PermissionCallback() {
+        RomPermission.checkAndRequest(this, new String[]{permission.CAMERA}, R.string.error_permission, new PermissionCallback() {
             @Override
             public void onResult(boolean success) {
                 if (success) {

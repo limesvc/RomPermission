@@ -42,9 +42,6 @@ public class PermissionRequestActivity extends Activity {
     }
 
     private void requestPermission() {
-        Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
-        startActivityForResult(intent, PERMISSION_CODE);
-
         List<String> uncheckPermissions = new ArrayList<>();
         for (String p : mPermissions) {
             //权限检测如果未允许，添加至待申请列表
