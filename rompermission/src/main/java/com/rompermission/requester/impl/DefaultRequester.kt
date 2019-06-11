@@ -14,9 +14,8 @@ import android.util.Log
 import android.widget.Toast
 import com.rompermission.PermissionCallback
 import com.rompermission.activity.PermissionRequestActivity
-
+import com.rompermission.ext.getContext
 import com.rompermission.requester.IRomPermissionRequester
-import javax.security.auth.callback.Callback
 
 
 open class DefaultRequester : IRomPermissionRequester {
@@ -66,7 +65,7 @@ open class DefaultRequester : IRomPermissionRequester {
         return checkAndRequest(host, permissions, message, callback)
     }
 
-    override fun checkAndRequest(host: Any, permissions: Array<String>, message: String, callback: PermissionCallback?): Boolean {
+    override fun checkAndRequest(host: Any, permissions: Array<String>, message: String?, callback: PermissionCallback?): Boolean {
         val dynamicPermission = mutableListOf<String>()
 
         var needAlertWindow = false;
@@ -103,8 +102,8 @@ open class DefaultRequester : IRomPermissionRequester {
                     throwable.printStackTrace()
                 }
 
-                if (!success) {
-                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                if (!success && message?.isNotEmpty() == true) {
+                    Toast.makeText(context.applicationContext, message, Toast.LENGTH_SHORT).show()
                 }
 
                 if (needAlertWindow) {
@@ -115,42 +114,42 @@ open class DefaultRequester : IRomPermissionRequester {
         return false
     }
 
-    open protected fun doCalendarRequest(host: Any, permission: String, requestCode: Int): Boolean {
+    protected open fun doCalendarRequest(host: Any, permission: String, requestCode: Int): Boolean {
         return doRequest(host, permission, requestCode)
     }
 
-    open protected fun doCameraRequest(host: Any, permission: String, requestCode: Int): Boolean {
+    protected open fun doCameraRequest(host: Any, permission: String, requestCode: Int): Boolean {
         return doRequest(host, permission, requestCode)
     }
 
-    open protected fun doContactsRequest(host: Any, permission: String, requestCode: Int): Boolean {
+    protected open fun doContactsRequest(host: Any, permission: String, requestCode: Int): Boolean {
         return doRequest(host, permission, requestCode)
     }
 
-    open protected fun doPhoneRequest(host: Any, permission: String, requestCode: Int): Boolean {
+    protected open fun doPhoneRequest(host: Any, permission: String, requestCode: Int): Boolean {
         return doRequest(host, permission, requestCode)
     }
 
-    open protected fun doLocationRequest(host: Any, permission: String, requestCode: Int): Boolean {
+    protected open fun doLocationRequest(host: Any, permission: String, requestCode: Int): Boolean {
         return doRequest(host, permission, requestCode)
     }
 
-    open protected fun doSensorsRequest(host: Any, permission: String, requestCode: Int): Boolean {
+    protected open fun doSensorsRequest(host: Any, permission: String, requestCode: Int): Boolean {
         return doRequest(host, permission, requestCode)
     }
 
-    open protected fun doSMSRequest(host: Any, permission: String, requestCode: Int): Boolean {
+    protected open fun doSMSRequest(host: Any, permission: String, requestCode: Int): Boolean {
         return doRequest(host, permission, requestCode)
     }
 
-    open protected fun doStorageRequest(host: Any, permission: String, requestCode: Int): Boolean {
+    protected open fun doStorageRequest(host: Any, permission: String, requestCode: Int): Boolean {
         return doRequest(host, permission, requestCode)
     }
 
     /**
      * https://blog.csdn.net/self_study/article/details/52859790
      */
-    open protected fun doAlertWindowRequest(host: Any): Boolean {
+    protected open fun doAlertWindowRequest(host: Any): Boolean {
         val context = getContext(host)
         if (!hasAlertWindowPermission(context)) {
             //没有悬浮窗权限,跳转申请
@@ -180,12 +179,6 @@ open class DefaultRequester : IRomPermissionRequester {
     }
 
     protected fun getContext(host: Any): Context {
-        if (host is Activity) {
-            return host
-        } else if (host is Fragment) {
-            return host.activity
-        } else {
-            throw IllegalArgumentException("Unknown host!!!")
-        }
+        return host.getContext() ?: throw IllegalArgumentException("Unknown host!!!")
     }
 }

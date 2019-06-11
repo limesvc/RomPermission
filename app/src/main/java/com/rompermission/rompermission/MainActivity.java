@@ -15,6 +15,9 @@ import com.rompermission.util.RomUtil;
 import com.rompermission.PermissionCallback;
 import com.rompermission.RomPermission;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
+
 /**
  * @author wuxi
  * @since 2018/7/12
@@ -37,18 +40,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onRequest(View view) {
-        RomPermission.checkAndRequest(this, new String[]{permission.CAMERA}, R.string.error_permission, new PermissionCallback() {
+        RomPermission.checkAndRequest(this, new String[]{permission.CAMERA}, R.string.error_permission, new Function1<Boolean, Unit>() {
             @Override
-            public void onResult(boolean success) {
+            public Unit invoke(Boolean success) {
                 if (success) {
                     Log.e("onRequest", "success____233333333");
 //                    installMeizuApk();
                 } else {
                     Log.e("onRequest", "failure____233333333");
                 }
+                return null;
             }
         });
-//        boolean success = RomPermission.checkAndRequest(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.SYSTEM_ALERT_WINDOW}, R.string.error_permission, null);
     }
 
 }
