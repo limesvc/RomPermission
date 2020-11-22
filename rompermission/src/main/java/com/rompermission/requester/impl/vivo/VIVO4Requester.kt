@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Binder
+import androidx.activity.ComponentActivity
 import com.rompermission.requester.impl.RomRequester
 
 /**
@@ -14,8 +15,8 @@ import com.rompermission.requester.impl.RomRequester
  * DeviceFileExploler 导出PermissionManager.apk进行分析
  */
 class VIVO4Requester : RomRequester() {
-    override fun doAlertWindowRequest(host: Any): Boolean {
-        val context = getContext(host)
+    override fun doAlertWindowRequest(activity: ComponentActivity, block: ((permitted: Boolean) -> Unit)?): Boolean {
+        val context = getContext(activity)
         return if (!hasAlertWindowPermission(context)) {
             val intent = Intent("permission.intent.action.softPermissionDetail")
             val componentName = ComponentName("com.vivo.permissionmanager", "com.vivo.permissionmanager.activity.SoftPermissionDetailActivity")

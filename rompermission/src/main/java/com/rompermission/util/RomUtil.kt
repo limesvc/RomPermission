@@ -10,8 +10,6 @@ import java.lang.Exception
 
 
 object RomUtil {
-    private val TAG = "RomUtil"
-
     //标识参考：https://blog.csdn.net/iblue007/article/details/78481533
 
     //MIUI标识

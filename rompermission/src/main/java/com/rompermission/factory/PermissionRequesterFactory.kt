@@ -10,8 +10,7 @@ import com.rompermission.requester.impl.vivo.VIVO4Requester
 import com.rompermission.util.RomInfo
 import com.rompermission.util.RomType
 
-class PermissionRequesterFactory private constructor() {
-
+object PermissionRequesterFactory  {
     fun getPermissionRequester(romInfo: RomInfo): IRomPermissionRequester? {
         when (romInfo.romType) {
             RomType.MIUI -> return MIUIRequesterFactory().getRequester(romInfo.version)
@@ -21,10 +20,5 @@ class PermissionRequesterFactory private constructor() {
             RomType.OPPO -> return DefaultRequester()
             RomType.OTHER -> return DefaultRequester()
         }
-    }
-
-    companion object {
-
-        val instance = PermissionRequesterFactory()
     }
 }
