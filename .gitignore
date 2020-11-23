@@ -1,9 +1,12 @@
-*.iml
 .gradle
 /local.properties
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
+# IntelliJ specific files/directories
+out
+.idea
+*.ipr
+*.iws
+*.iml
+atlassian-ide-plugin.xml
 .DS_Store
 /build
 /captures
