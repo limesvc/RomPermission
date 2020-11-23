@@ -23,20 +23,15 @@ import java.util.concurrent.BlockingQueue
 
 
 open class DefaultRequester : IRomPermissionRequester {
-    override fun check(host: Any, permissions: Array<String>): Boolean {
+    override fun check(host: Any, permissions: Array<Permission>) {
         val context = getContext(host)
-        for (permission in permissions) {
-            if (Manifest.permission.SYSTEM_ALERT_WINDOW == permission) {
-                if (!hasAlertWindowPermission(context)) {
-                    return false
-                }
+        for (p in permissions) {
+            if (Manifest.permission.SYSTEM_ALERT_WINDOW == p.permission) {
+                p.permitted = hasAlertWindowPermission(context)
             } else {
-                if (!hasPermission(context, permission)) {
-                    return false
-                }
+                p.permitted =hasPermission(context, p.permission)
             }
         }
-        return true
     }
 
     private fun hasPermission(context: Context, permission: String): Boolean {
@@ -58,68 +53,18 @@ open class DefaultRequester : IRomPermissionRequester {
     }
 
     open fun hasInstallPackagePermission(context: Context): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            return context.packageManager.canRequestPackageInstalls()
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            return ContextCompat.checkSelfPermission(context, Manifest.permission.REQUEST_INSTALL_PACKAGES) == PackageManager.PERMISSION_GRANTED
-        } else
-            return true
-    }
-
-    override fun checkAndRequest(host: Any, permissions: Array<String>, messageResId: Int, callback: PermissionCallback?): Boolean {
-        val context = getContext(host)
-        val message = context.getString(messageResId)
-        return checkAndRequest(host, permissions, message, callback)
-    }
-
-    override fun checkAndRequest(host: Any, permissions: Array<String>, message: String?, callback: PermissionCallback?): Boolean {
-        val dynamicPermission = mutableListOf<String>()
-        var needAlertWindow = false
-        val context = getContext(host)
-        for (permission in permissions) {
-            if (Manifest.permission.SYSTEM_ALERT_WINDOW != permission) {
-                val granted = hasPermission(context, permission)
-                if (!granted) {
-                    dynamicPermission.add(permission)
-                }
-            } else if (!hasPermission(context, Manifest.permission.SYSTEM_ALERT_WINDOW)) {
-                needAlertWindow = true
+        return when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
+                context.packageManager.canRequestPackageInstalls()
             }
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
+                ContextCompat.checkSelfPermission(context, Manifest.permission.REQUEST_INSTALL_PACKAGES) == PackageManager.PERMISSION_GRANTED
+            }
+            else -> true
         }
-
-        if (dynamicPermission.isEmpty() && !needAlertWindow) {
-            callback?.onResult(true)
-            return true
-        }
-
-        if (dynamicPermission.isEmpty() && needAlertWindow) {
-//            doAlertWindowRequest(host)
-            return false
-        }
-
-//        PermissionRequestActivity.permissionRequest(context, dynamicPermission.toTypedArray(), object : PermissionCallback {
-//            override fun onResult(success: Boolean) {
-//                PermissionRequestActivity.clearCallback()
-//
-//                try {
-//                    callback?.onResult(success)
-//                } catch (throwable: Throwable) {
-//                    throwable.printStackTrace()
-//                }
-//
-//                if (!success && message?.isNotEmpty() == true) {
-//                    Toast.makeText(context.applicationContext, message, Toast.LENGTH_SHORT).show()
-//                }
-//
-//                if (needAlertWindow) {
-//                    doAlertWindowRequest(host)
-//                }
-//            }
-//        })
-        return false
     }
 
-    override fun checkAndRequest(host: Any, permissions: Array<Permission>, queue: BlockingQueue<Boolean>, callback: (Array<Permission>) -> Unit) {
+    override fun checkAndRequest(host: Any, permissions: Array<Permission>, callback: (Array<Permission>) -> Unit) {
         val context = getContext(host)
         val unPermitted = mutableListOf<String>()
         var floatPermission: Permission? = null
@@ -150,8 +95,6 @@ open class DefaultRequester : IRomPermissionRequester {
         }
 
         PermissionRequestActivity.request(context) { activity ->
-            Log.e("2333333333333333", "queue.offer(true)")
-            queue.offer(true)
             if (floatPermission != null) {
                 total++
                 doAlertWindowRequest(activity) { permitted ->
@@ -224,16 +167,10 @@ open class DefaultRequester : IRomPermissionRequester {
         activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             block?.invoke(it.resultCode == Activity.RESULT_OK)
         }.launch(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION))
-//        if (!hasAlertWindowPermission(context)) {
-//            //没有悬浮窗权限,跳转申请
-//            val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION)
-//            context.startActivity(intent)
-//            return false;
-//        }
         return true
     }
 
-    protected fun doRequest(host: Any, permission: String, requestCode: Int): Boolean {
+    private fun doRequest(host: Any, permission: String, requestCode: Int): Boolean {
         if (host is Activity) {
             if (ContextCompat.checkSelfPermission(host, permission) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(host, arrayOf(permission), requestCode)

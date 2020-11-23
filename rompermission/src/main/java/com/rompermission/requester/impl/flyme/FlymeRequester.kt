@@ -6,9 +6,8 @@ import com.rompermission.requester.impl.RomRequester
 
 abstract class FlymeRequester : RomRequester() {
     override fun doAlertWindowRequest(activity: ComponentActivity, block: ((permitted: Boolean) -> Unit)?): Boolean {
-        val context = getContext(activity)
-        return if (!hasAlertWindowPermission(context)) {
-            applyAlterPermission(context)
+        return if (!hasAlertWindowPermission(activity)) {
+            applyAlterPermission(activity)
             false
         } else {
             true

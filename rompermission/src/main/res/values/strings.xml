@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">RomPermission</string>
+
+    <string name="rom_permission_fail_setting">进入设置页面失败，请手动设置</string>
 </resources>

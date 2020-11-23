@@ -9,7 +9,7 @@ class Flyme5Requester : FlymeRequester() {
         val intent = Intent("com.meizu.safe.security.SHOW_APPSEC")
         intent.setClassName("com.meizu.safe", "com.meizu.safe.security.AppSecActivity")
         intent.putExtra("packageName", context.packageName)
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         context.startActivity(intent)
     }
 }

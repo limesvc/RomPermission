@@ -20,7 +20,7 @@ class VIVO4Requester : RomRequester() {
         return if (!hasAlertWindowPermission(context)) {
             val intent = Intent("permission.intent.action.softPermissionDetail")
             val componentName = ComponentName("com.vivo.permissionmanager", "com.vivo.permissionmanager.activity.SoftPermissionDetailActivity")
-            intent.setComponent(componentName)
+            intent.component = componentName
             intent.putExtra("packagename", context.packageName)
             context.startActivity(intent)
             false
