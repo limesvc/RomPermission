@@ -3,10 +3,7 @@ package com.rompermission.util
 import android.os.Environment
 import android.util.Log
 import java.io.*
-
-import java.lang.Exception
-import java.util.Enumeration
-import java.util.Properties
+import java.util.*
 
 class BuildProperties @Throws(IOException::class)
 private constructor() {

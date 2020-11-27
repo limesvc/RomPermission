@@ -1,8 +1,6 @@
 package com.rompermission.result
 
 import android.content.Context
-import android.os.Parcel
-import android.os.Parcelable
 import android.widget.Toast
 import androidx.annotation.StringRes
 

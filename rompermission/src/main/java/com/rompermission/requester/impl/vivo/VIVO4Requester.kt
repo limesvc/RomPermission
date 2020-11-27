@@ -1,5 +1,6 @@
 package com.rompermission.requester.impl.vivo
 
+import android.app.Activity
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -7,6 +8,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Binder
 import androidx.activity.ComponentActivity
+import androidx.activity.result.contract.ActivityResultContracts
 import com.rompermission.requester.impl.RomRequester
 
 /**
@@ -22,7 +24,9 @@ class VIVO4Requester : RomRequester() {
             val componentName = ComponentName("com.vivo.permissionmanager", "com.vivo.permissionmanager.activity.SoftPermissionDetailActivity")
             intent.component = componentName
             intent.putExtra("packagename", context.packageName)
-            context.startActivity(intent)
+            activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                block?.invoke(it.resultCode == Activity.RESULT_OK)
+            }.launch(intent)
             false
         } else {
             true

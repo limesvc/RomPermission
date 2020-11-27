@@ -1,7 +1,6 @@
 package com.rompermission.factory
 
 import com.rompermission.requester.impl.DefaultRequester
-import java.lang.Exception
 
 abstract class RomRequesterFactory {
     abstract fun getRequester(romVersion: String): DefaultRequester

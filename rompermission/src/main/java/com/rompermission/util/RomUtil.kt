@@ -2,11 +2,7 @@ package com.rompermission.util
 
 import android.text.TextUtils
 import android.util.Log
-
 import java.io.IOException
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.lang.Exception
 
 
 object RomUtil {

@@ -11,7 +11,7 @@ abstract class MIUIRequester : RomRequester() {
 
     override fun doAlertWindowRequest(activity: ComponentActivity, block: ((permitted: Boolean) -> Unit)?): Boolean {
         return if (!hasAlertWindowPermission(activity)) {
-            applyAlterPermission(activity)
+            applyAlterPermission(activity, block)
             false
         } else {
             true
@@ -30,5 +30,5 @@ abstract class MIUIRequester : RomRequester() {
         }
     }
 
-    abstract fun applyAlterPermission(context: Context)
+    abstract fun applyAlterPermission(activity: ComponentActivity, block: ((permitted: Boolean) -> Unit)?)
 }

@@ -1,15 +1,18 @@
 package com.rompermission.requester.impl.flyme
 
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
-import com.rompermission.requester.impl.RomRequester
+import androidx.activity.ComponentActivity
+import androidx.activity.result.contract.ActivityResultContracts
 
 class Flyme5Requester : FlymeRequester() {
-    override fun applyAlterPermission(context: Context) {
+    override fun applyAlterPermission(activity: ComponentActivity, block: ((permitted: Boolean) -> Unit)?) {
         val intent = Intent("com.meizu.safe.security.SHOW_APPSEC")
         intent.setClassName("com.meizu.safe", "com.meizu.safe.security.AppSecActivity")
-        intent.putExtra("packageName", context.packageName)
+        intent.putExtra("packageName", activity.packageName)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        context.startActivity(intent)
+        activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            block?.invoke(it.resultCode == Activity.RESULT_OK)
+        }.launch(intent)
     }
 }

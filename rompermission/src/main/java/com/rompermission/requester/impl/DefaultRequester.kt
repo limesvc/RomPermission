@@ -9,17 +9,14 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.provider.Settings
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.rompermission.PermissionCallback
 import com.rompermission.activity.PermissionRequestActivity
 import com.rompermission.ext.getContext
 import com.rompermission.requester.IRomPermissionRequester
 import com.rompermission.result.Permission
-import java.util.concurrent.BlockingQueue
 
 
 open class DefaultRequester : IRomPermissionRequester {
@@ -29,7 +26,7 @@ open class DefaultRequester : IRomPermissionRequester {
             if (Manifest.permission.SYSTEM_ALERT_WINDOW == p.permission) {
                 p.permitted = hasAlertWindowPermission(context)
             } else {
-                p.permitted =hasPermission(context, p.permission)
+                p.permitted = hasPermission(context, p.permission)
             }
         }
     }
@@ -162,7 +159,7 @@ open class DefaultRequester : IRomPermissionRequester {
     /**
      * https://blog.csdn.net/self_study/article/details/52859790
      */
-    protected open fun doAlertWindowRequest(activity: ComponentActivity, block:((permitted:Boolean) -> Unit)? = null): Boolean {
+    protected open fun doAlertWindowRequest(activity: ComponentActivity, block: ((permitted: Boolean) -> Unit)? = null): Boolean {
         //没有悬浮窗权限,跳转申请
         activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             block?.invoke(it.resultCode == Activity.RESULT_OK)

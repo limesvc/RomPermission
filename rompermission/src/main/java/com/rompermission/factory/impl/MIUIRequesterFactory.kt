@@ -2,8 +2,6 @@ package com.rompermission.factory.impl
 
 import com.rompermission.factory.RomRequesterFactory
 import com.rompermission.requester.impl.DefaultRequester
-import com.rompermission.requester.impl.emui.EMUI3Requester
-import com.rompermission.requester.impl.emui.EMUI3p1Requester
 import com.rompermission.requester.impl.miui.MIUI5Requester
 import com.rompermission.requester.impl.miui.MIUI6Requester
 import com.rompermission.requester.impl.miui.MIUI7Requester
